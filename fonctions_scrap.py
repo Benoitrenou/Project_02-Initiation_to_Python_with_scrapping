@@ -60,10 +60,11 @@ def getbookdataandimage (url) :
 	rating = soup.find("p", class_=re.compile("star-rating")).get("class")[1]
 	rating_dic = {"One": "1", "Two": "2", "Three": "3", "Four": "4", "Five": "5"}
 	note = rating_dic[rating]
-	data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, image_url, note]
+	data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, note, image_url, url]
 	print (f'Données livre {title} téléchargées')
 
-	titre_image = url.replace("http://books.toscrape.com/catalogue/", "").replace("/index.html", "")
+	#Titre image intègre titre du livre + catégorie du livre pour classement facilité
+	titre_image = url.split('/')[4]
 	filename = f"Image_{titre_image}_{CATEG}.jpeg"
 
 	r = requests.get(image_url, stream=True)
@@ -74,4 +75,5 @@ def getbookdataandimage (url) :
 		print (f' Image {titre_image} téléchargée')
 	else : 
 		print (f'Image {titre_image} non téléchargée - problème laison URL')
+	#message d'erreur prévu 
 	return data

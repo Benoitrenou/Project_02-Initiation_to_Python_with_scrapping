@@ -1,12 +1,15 @@
 import requests
-import re
-from bs4 import BeautifulSoup 
-from math import *
+from datetime import date
+import csv
 from fonctions_scrap import getresponseandsoup 
 from fonctions_scrap import getbookdataandimage
+#fonction envoie requête - récupère et parse données HTML - retrouve datas dans code HTML - télécharge image
 from fonctions_scrap import extractcateg 
+#fonction récupère ensemble des catégories disponibles du site 
 from fonctions_scrap import	geturlscateg
+#ajuste URL de la catégorie choisie par user dépendamment nmbre articles de la catégorie
 from fonctions_scrap import getarticleslinks
+#recense tous articles de la catégorie
 
 
 #Extraction urls des catégories dans une liste categories_urls
@@ -30,14 +33,11 @@ while response.status_code != 200 :
 
 #Définition nombre de résultats/pages et modification url en conséquence
 urls_categ = geturlscateg (url, categorie_choisie)
-print (urls_categ)
 #Liste urls_categ stock les urls des pages de la catégorie
 
 # Recenser articles par catégorie
 liens_articles = getarticleslinks (urls_categ) 
-print (liens_articles)
 # Liste liens_articles stock les urls de chaque article
-
 
 books = [] 
 for url in liens_articles : 
@@ -45,6 +45,8 @@ for url in liens_articles :
 	books.append(data_article)
 #liste books de listes datas qui contiennent infos de chaque livre
 
-print (len(books))
-print (books)
-
+with open(f'données{categorie_choisie}-{str(date.today())}.csv', 'w', encoding="utf-8", newline='') as file:
+    writer = csv.writer(file, quoting=csv.QUOTE_ALL, delimiter=';')
+    entête = ["Titre", "UPC", "Prix HT", "Prix TTC", "Stock", "Catégorie", "Description", "Note sur 5", "URL image", "URL livre"]
+    writer.writerow(entête)
+    writer.writerows(books)
