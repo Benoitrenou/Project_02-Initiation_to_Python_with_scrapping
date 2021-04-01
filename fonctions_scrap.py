@@ -1,5 +1,6 @@
 import re
 import requests
+import shutil
 from bs4 import BeautifulSoup
 from math import *
 
@@ -40,7 +41,7 @@ def getarticleslinks (urls) :
 	print(f"Nombre de livres de cette catégorie : {len(liens_articles)}")
 	return liens_articles 
 
-def getbookdata (url) : 
+def getbookdataandimage (url) : 
 	soup = getresponseandsoup (url)
 	#BeautifulSoup renvoie en réponse code HTML format text en utilisant parser souhaité - 'lxml'
 	#soup.find utilise BS pour trouver balises correspondantes dans code HTML et extraire donnée souhaitée
@@ -60,4 +61,17 @@ def getbookdata (url) :
 	rating_dic = {"One": "1", "Two": "2", "Three": "3", "Four": "4", "Five": "5"}
 	note = rating_dic[rating]
 	data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, image_url, note]
+	print (f'Données livre {title} téléchargées')
+
+	titre_image = url.replace("http://books.toscrape.com/catalogue/", "").replace("/index.html", "")
+	filename = f"Image_{titre_image}_{CATEG}.jpeg"
+
+	r = requests.get(image_url, stream=True)
+	if r.status_code == 200:
+		r.raw.decode_content = True
+		with open(filename, "wb") as f:
+			shutil.copyfileobj(r.raw, f)
+		print (f' Image {titre_image} téléchargée')
+	else : 
+		print (f'Image {titre_image} non téléchargée - problème laison URL')
 	return data

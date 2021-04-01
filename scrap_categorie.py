@@ -3,7 +3,7 @@ import re
 from bs4 import BeautifulSoup 
 from math import *
 from fonctions_scrap import getresponseandsoup 
-from fonctions_scrap import getbookdata
+from fonctions_scrap import getbookdataandimage
 from fonctions_scrap import extractcateg 
 from fonctions_scrap import	geturlscateg
 from fonctions_scrap import getarticleslinks
@@ -41,7 +41,7 @@ print (liens_articles)
 
 books = [] 
 for url in liens_articles : 
-	data_article = getbookdata (url) 
+	data_article = getbookdataandimage (url) 
 	books.append(data_article)
 #liste books de listes datas qui contiennent infos de chaque livre
 
