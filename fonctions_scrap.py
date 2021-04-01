@@ -78,4 +78,3 @@ def getbookdataandimage (url) :
 		print (f'Image {titre_image} non téléchargée - problème laison URL\n')
 	#message d'erreur prévu 
 	return data
-
