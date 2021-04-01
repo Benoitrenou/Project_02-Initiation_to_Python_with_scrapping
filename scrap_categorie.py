@@ -45,8 +45,9 @@ for url in liens_articles :
 	books.append(data_article)
 #liste books de listes datas qui contiennent infos de chaque livre
 
-with open(f'données{categorie_choisie}-{str(date.today())}.csv', 'w', encoding="utf-8", newline='') as file:
+with open(f'Données-{categorie_choisie}-{str(date.today())}.csv', 'w', encoding="utf-8", newline='') as file:
     writer = csv.writer(file, quoting=csv.QUOTE_ALL, delimiter=';')
     entête = ["Titre", "UPC", "Prix HT", "Prix TTC", "Stock", "Catégorie", "Description", "Note sur 5", "URL image", "URL livre"]
     writer.writerow(entête)
     writer.writerows(books)
+    print (f'Données {categorie_choisie} téléchargées et disponibles dans fichier Données-{categorie_choisie}-{str(date.today())}.csv')

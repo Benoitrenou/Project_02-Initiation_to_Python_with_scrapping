@@ -4,6 +4,7 @@ import shutil
 from bs4 import BeautifulSoup
 from math import *
 
+
 def getresponseandsoup(url) :
 	#Requête pour récupérer données HTML de la page - analyse via soup base librairie 'lxml'
 	response = requests.get(url)
@@ -61,7 +62,7 @@ def getbookdataandimage (url) :
 	rating_dic = {"One": "1", "Two": "2", "Three": "3", "Four": "4", "Five": "5"}
 	note = rating_dic[rating]
 	data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, note, image_url, url]
-	print (f'Données livre {title} téléchargées')
+	print (f'Données livre {title} stockées pour écriture')
 
 	#Titre image intègre titre du livre + catégorie du livre pour classement facilité
 	titre_image = url.split('/')[4]
@@ -77,3 +78,4 @@ def getbookdataandimage (url) :
 		print (f'Image {titre_image} non téléchargée - problème laison URL')
 	#message d'erreur prévu 
 	return data
+
