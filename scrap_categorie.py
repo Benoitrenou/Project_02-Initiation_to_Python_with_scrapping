@@ -17,7 +17,7 @@ categories_urls = extractcateg ("http://books.toscrape.com/index.html")
 
 #Print toutes les catégories pour permettre à utilisateur de choisir 
 for y in categories_urls:
-	print(f'Catégorie disponible : {y.replace("catalogue/category/books/", "").replace("/index.html", "")}')
+	print(f'Catégorie disponible : {y.replace("catalogue/category/books/", "").replace("/index.html", "")}\n')
 
 
 #Choix catégorie par utilisateur et modif URL en conséquence 
@@ -25,7 +25,7 @@ categorie_choisie = input("Suivez les modèles proposés : nom_n° \nQuelle est 
 url = f"http://books.toscrape.com/catalogue/category/books/{categorie_choisie}/index.html"
 response = requests.get(url)
 while response.status_code != 200 : 
-	print ('Erreur - vérifiez la catégorie que vous avez entrée ou votre connexion')
+	print ('Erreur - vérifiez la catégorie que vous avez entrée ou votre connexion\n')
 	categorie_choisie = input("Suivez les modèles proposés : nom_n° \nQuelle est la catégorie que vous recherchez ?")
 	url = f"http://books.toscrape.com/catalogue/category/books/{categorie_choisie}/index.html"
 	response = requests.get(url)
@@ -50,4 +50,4 @@ with open(f'Données-{categorie_choisie}-{str(date.today())}.csv', 'w', encoding
     entête = ["Titre", "UPC", "Prix HT", "Prix TTC", "Stock", "Catégorie", "Description", "Note sur 5", "URL image", "URL livre"]
     writer.writerow(entête)
     writer.writerows(books)
-    print (f'Données {categorie_choisie} téléchargées et disponibles dans fichier Données-{categorie_choisie}-{str(date.today())}.csv')
+    print (f'\nDonnées {categorie_choisie} téléchargées et disponibles dans fichier Données-{categorie_choisie}-{str(date.today())}.csv\n')

@@ -39,7 +39,7 @@ def getarticleslinks (urls) :
 	        a = article.find("a")
 	        link = a["href"].replace("../../../", "")
 	        liens_articles.append(f"http://books.toscrape.com/catalogue/{link}")
-	print(f"Nombre de livres de cette catégorie : {len(liens_articles)}")
+	print(f"\nNombre de livres de cette catégorie : {len(liens_articles)}\n")
 	return liens_articles 
 
 def getbookdataandimage (url) : 
@@ -62,20 +62,20 @@ def getbookdataandimage (url) :
 	rating_dic = {"One": "1", "Two": "2", "Three": "3", "Four": "4", "Five": "5"}
 	note = rating_dic[rating]
 	data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, note, image_url, url]
-	print (f'Données livre {title} stockées pour écriture')
+	print (f'\nDonnées livre {title} stockées pour écriture\n')
 
 	#Titre image intègre titre du livre + catégorie du livre pour classement facilité
 	titre_image = url.split('/')[4]
-	filename = f"Image_{titre_image}_{CATEG}.jpeg"
+	filename = f"Image_{titre_image:.60}_{CATEG}.jpeg"
 
 	r = requests.get(image_url, stream=True)
 	if r.status_code == 200:
 		r.raw.decode_content = True
 		with open(filename, "wb") as f:
 			shutil.copyfileobj(r.raw, f)
-		print (f' Image {titre_image} téléchargée')
+		print (f' Image {titre_image} téléchargée\n')
 	else : 
-		print (f'Image {titre_image} non téléchargée - problème laison URL')
+		print (f'Image {titre_image} non téléchargée - problème laison URL\n')
 	#message d'erreur prévu 
 	return data
 

@@ -17,7 +17,7 @@ categories_urls = extractcateg ("http://books.toscrape.com/index.html")
 
 for j in categories_urls : 
 	i = j.split('/')[3]
-	print (f'Initiation scrapping catégorie {i}')
+	print (f'Initiation scrapping catégorie {i}\n')
 	url = f"http://books.toscrape.com/catalogue/category/books/{i}/index.html"
 	response = requests.get(url)
 	#Définition nombre de résultats/pages et modification url en conséquence
@@ -39,4 +39,4 @@ for j in categories_urls :
 	    entête = ["Titre", "UPC", "Prix HT", "Prix TTC", "Stock", "Catégorie", "Description", "Note sur 5", "URL image", "URL livre"]
 	    writer.writerow(entête)
 	    writer.writerows(books)
-	    print (f'Données {i} téléchargées et disponibles dans fichier Données-{i}-{str(date.today())}.csv')
+	    print (f'\nDonnées {i} téléchargées et disponibles dans fichier Données-{i}-{str(date.today())}.csv\n')
