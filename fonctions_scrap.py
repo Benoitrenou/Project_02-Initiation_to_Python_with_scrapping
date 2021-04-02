@@ -1,8 +1,11 @@
 import re
+import csv
 import requests
 import shutil
 from bs4 import BeautifulSoup
 from math import *
+from datetime import date
+
 
 
 def getresponseandsoup(url) :
@@ -67,6 +70,7 @@ def getbookdataandimage (url) :
 	#Titre image intègre titre du livre + catégorie du livre pour classement facilité
 	titre_image = url.split('/')[4]
 	filename = f"Image_{titre_image:.60}_{CATEG}.jpeg"
+	#Limite nombre de caractères pour titre de l'image pour éviter erreur
 
 	r = requests.get(image_url, stream=True)
 	if r.status_code == 200:
@@ -78,3 +82,25 @@ def getbookdataandimage (url) :
 		print (f'Image {titre_image} non téléchargée - problème laison URL\n')
 	#message d'erreur prévu 
 	return data
+
+def opencsv (liste, listes, name):
+	with open(f"Data-{name}-{str(date.today())}.csv", "w", encoding="utf-8", newline="") as file:
+		writer = csv.writer(file, quoting=csv.QUOTE_ALL, delimiter=";")
+		entête = [
+		"Titre",
+		"UPC",
+		"Prix HT",
+		"Prix TTC",
+		"Stock",
+		"Catégorie",
+		"Description",
+		"Note sur 5",
+		"URL image",
+		"URL livre",
+		]
+		writer.writerow(entête)
+		if liste != None : 
+			writer.writerow (liste)
+		if listes != None :
+			writer.writerows(listes)
+		print (f'Données de {name} téléchargées et disponibles sur fichier Data-{name}-{str(date.today())}.csv')
