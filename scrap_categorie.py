@@ -1,20 +1,10 @@
 import requests
-from fonctions_scrap import getbookdataandimage
-#Récupère et stock data - télécharge image
-from fonctions_scrap import extractcateg
-#Récupère catégories disponibles
-from fonctions_scrap import geturlscateg
-#Ajuste URL de la catégorie choisie par user fonction nmbre articles de la catégorie
-from fonctions_scrap import getarticleslinks
-#Recense tous articles de la catégorie
-from fonctions_scrap import opencsv
-#Ouvre csv pour écriture données
+from fonctions_scrap import*
 
 categories_urls = extractcateg("http://books.toscrape.com/index.html")
-
 #Print toutes les catégories pour permettre à utilisateur de choisir
 for y in categories_urls:
-    print(f'Catégorie disponible : {y.replace("catalogue/category/books/", "").replace("/index.html", "")}\n')
+    print(f'Catégorie disponible : {y.split("/")[3]}\n')
 
 
 #Choix catégorie par utilisateur et modif URL en conséquence
