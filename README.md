@@ -14,8 +14,8 @@ Afin de faire fonctionner ce script, veuillez suivre les étapes suivantes
   - le script télécharge chaque couverture qui sont nommées d'après le titre du livre
   
   - Pour le script 'scrap_général.py' : lancez simplement le script pour que celui-ci récupère les données de l'ensemble des livres du site 
-  > le script crée un fichier csv pour chaque catégorie dans lequel sont écrites les données de tous les livres de la catégorie  
-  > le script télécharge chaque couverture qui sont nommées d'après le titre du livre
+  - le script crée un fichier csv pour chaque catégorie dans lequel sont écrites les données de tous les livres de la catégorie  
+  - le script télécharge chaque couverture qui sont nommées d'après le titre du livre
 3. Retrouvez vos données dans fichier créé dans l'arborescence du script nommé d'après le titre ou la catégorie dont vous avez receuilli les données et le moment (date-heure) ou vous avez lancé le script
   - exemple pour une catégorie : "fichiers-crime_51-2021-04-02_22-33-19" > "Data-crime_51.csv" + images des livres correspondants 
   - exemple pour un livre unique : "fichiers-Rip it Up and Start Again-2021-04-02_22-19-58" > "Data-Rip it Up and Start Again.csv" + "Image_Rip it Up and Start Again_Music.jpeg"
