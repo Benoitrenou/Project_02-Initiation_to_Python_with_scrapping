@@ -41,12 +41,11 @@ for url in liens_articles:
     data_article = getbookdata(url)
     books.append(data_article)
 # liste books de listes datas qui contiennent infos de chaque livre
-path = openfile(titre=categorie_choisie)
+openfile(titre=categorie_choisie)
 for data_article in books:
     downldimg(
         titre=data_article[0],
         categorie=data_article[5],
-        image_url=data_article[8],
-        path=path,
+        image_url=data_article[8]
     )
-opencsv(listes=books, name=categorie_choisie, liste=None, path=path)
+opencsv(listes=books, name=categorie_choisie, liste=None)

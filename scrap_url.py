@@ -16,5 +16,5 @@ url = input("URL de votre livre : ")
 
 data = getbookdata(url)
 path = openfile(data[0])
-downldimg(titre=data[0], categorie=data[5], image_url=data[8], path=path)
-opencsv(name=data[0], liste=data, listes=None, path=path)
+downldimg(titre=data[0], categorie=data[5], image_url=data[8])
+opencsv(name=data[0], liste=data, listes=None)

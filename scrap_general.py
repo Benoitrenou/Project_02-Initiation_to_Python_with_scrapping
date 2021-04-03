@@ -1,4 +1,5 @@
 import requests
+import os
 from fonctions_scrap import extractcateg
 from fonctions_scrap import geturlscateg
 from fonctions_scrap import getarticleslinks
@@ -25,12 +26,12 @@ for j in categories_urls:
         data_article = getbookdata(url)
         books.append(data_article)
     # liste books de listes datas qui contiennent infos de chaque livre
-    path = openfile(titre=i)
+    openfile(titre=i)
     for data_article in books:
         downldimg(
             titre=data_article[0],
             categorie=data_article[5],
             image_url=data_article[8],
-            path=path,
         )
-    opencsv(listes=books, name=i, liste=None, path=path)
+    opencsv(listes=books, name=i, liste=None)
+    os.chdir('..')

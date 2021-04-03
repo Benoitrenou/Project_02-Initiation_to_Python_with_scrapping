@@ -2,7 +2,6 @@ import re
 import csv
 import shutil
 import os
-from pathlib import Path
 from math import ceil
 import datetime
 from bs4 import BeautifulSoup
@@ -84,10 +83,12 @@ def openfile(titre):
     titre_file = sanitize_filepath(titre)
     path = f"{os.getcwd()}/fichiers-{titre_file}-{date}"
     os.mkdir(path)
-    return path
+    os.chdir(path)
+    cwd = os.getcwd()
+    print("Dossier d'enregistrement des fichiers :", cwd)
 
 
-def downldimg(titre, categorie, image_url, path):
+def downldimg(titre, categorie, image_url):
     titre_image = sanitize_filename(titre)
     img_name = f"Image_{titre_image:.60}_{categorie}.jpeg"
     # Limite nombre de caractères pour titre de l'image pour éviter erreur
@@ -100,10 +101,8 @@ def downldimg(titre, categorie, image_url, path):
     else:
         print(f"Image {titre_image} non téléchargée - problème laison URL\n")
     # message d'erreur prévu
-    Path(f"{os.getcwd()}/{img_name}").rename(f"{path}/{img_name}")
 
-
-def opencsv(name, liste, listes, path):
+def opencsv(name, liste, listes):
     filename = f"Data-{name}.csv"
     with open(f"{filename}", "w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL, delimiter=";")
@@ -124,5 +123,4 @@ def opencsv(name, liste, listes, path):
             writer.writerow(liste)
         if listes != None:
             writer.writerows(listes)
-    Path(f"{os.getcwd()}/{filename}").rename(f"{path}/{filename}")
     print(f"Données de {name} téléchargées et disponibles sur fichier Data-{name}.csv")
