@@ -1,20 +1,8 @@
-from fonctions_scrap import getbookdata
-
-# Récupère et stock data - télécharge image
-from fonctions_scrap import opencsv
-
-# Ouvre csv pour écriture données
-from fonctions_scrap import openfile
-
-# Ouvre dossier pour stocker image et csv
-from fonctions_scrap import downldimg
-
-# Télécharge images et stock dans fichier
-
+from fonctions_scrap import getlivre
+# Télécharge données livres de l'url
+# Ouvre un répertoire pour stockage
+# Télécharge image de couverture dans répertoire
+# Ecrit données dans csv stocké dans répertoire
 
 url = input("URL de votre livre : ")
-
-data = getbookdata(url)
-path = openfile(data[0])
-downldimg(titre=data[0], categorie=data[5], image_url=data[8])
-opencsv(name=data[0], liste=data, listes=None)
+getlivre(url)

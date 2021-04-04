@@ -1,3 +1,4 @@
+# coding : utf-8
 import re
 import csv
 import shutil
@@ -74,7 +75,7 @@ def getbookdata(url):
     rating_dic = {"One": "1", "Two": "2", "Three": "3", "Four": "4", "Five": "5"}
     note = rating_dic[rating]
     data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, note, image_url, url]
-    print(f"\nDonnées livre {title} stockées pour écriture\n")
+    print(f"Données livre {title} stockées pour écriture")
     return data
 
 
@@ -85,7 +86,7 @@ def openfile(titre):
     os.mkdir(path)
     os.chdir(path)
     cwd = os.getcwd()
-    print("Dossier d'enregistrement des fichiers :", cwd)
+    print("Dossier d'enregistrement des fichiers :", cwd, "\n")
 
 
 def downldimg(titre, categorie, image_url):
@@ -97,12 +98,16 @@ def downldimg(titre, categorie, image_url):
         r.raw.decode_content = True
         with open(img_name, "wb") as f:
             shutil.copyfileobj(r.raw, f)
-        print(f" Image {titre_image} téléchargée\n")
+        print(f"Image {titre_image} téléchargée")
     else:
-        print(f"Image {titre_image} non téléchargée - problème laison URL\n")
+        print(f"Image {titre_image} non téléchargée - problème laison URL")
     # message d'erreur prévu
 
-def opencsv(name, liste, listes):
+
+def opencsv(name, listes):
+    if listes is None or len(listes) == 0:
+        print("Erreur : données vides")
+        return
     filename = f"Data-{name}.csv"
     with open(f"{filename}", "w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL, delimiter=";")
@@ -119,8 +124,57 @@ def opencsv(name, liste, listes):
             "URL livre",
         ]
         writer.writerow(entête)
-        if liste != None:
-            writer.writerow(liste)
-        if listes != None:
-            writer.writerows(listes)
-    print(f"Données de {name} téléchargées et disponibles sur fichier Data-{name}.csv")
+        writer.writerows(listes)
+        print(
+            f"\nDonnées de {name} téléchargées et disponibles sur fichier Data-{name}.csv\n"
+        )
+
+
+def getlivre(url, categorie=None):
+    data = getbookdata(url)
+    if categorie is None:
+        openfile(data[0])
+    downldimg(titre=data[0], categorie=data[5], image_url=data[8])
+    books = []
+    books.append(data)
+    if categorie is None:
+        opencsv(name=data[0], listes=books)
+    return data
+
+
+def getcategorie(categorie_choisie):
+    url = f"http://books.toscrape.com/catalogue/category/books/{categorie_choisie}/index.html"
+    response = requests.get(url)
+    if response.status_code != 200:
+        print("Erreur : nom de la catégorie introuvable")
+        return -1
+
+    urls_categ = geturlscateg(url, categorie_choisie)
+    # Liste urls_categ stock les urls des pages de la catégorie
+
+    liens_articles = getarticleslinks(urls_categ)
+    # Liste liens_articles stock les urls de chaque article
+    openfile(titre=categorie_choisie)
+    books = []
+    for url in liens_articles:
+        data = getlivre(url, categorie=categorie_choisie)
+        books.append(data)
+    opencsv(name=categorie_choisie, listes=books)
+
+
+def choix(choix):
+    categories_urls = extractcateg("http://books.toscrape.com/index.html")
+    if choix is not None:
+        for y in categories_urls:
+            print(f'Catégorie disponible : {y.split("/")[3]}')
+        categorie_choisie = input(
+            "Suivez les modèles proposés : nom_n° \nQuelle est la catégorie que vous recherchez ?"
+        )
+        getcategorie(categorie_choisie=categorie_choisie)
+
+    else:
+        for j in categories_urls:
+            i = j.split("/")[3]
+            print(f"Initiation scrapping catégorie {i}\n")
+            getcategorie(categorie_choisie=i)
+            os.chdir("..")
