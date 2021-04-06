@@ -1,4 +1,4 @@
-# coding : utf-8
+# -*- coding: utf-8 -*-
 import re
 import csv
 import shutil
@@ -19,6 +19,8 @@ def getresponseandsoup(url):
 
 
 def extractcateg(url):
+	# Extrait toutes les catégories disponibles du site
+	# Stock les catégories dans liste categories_urls
     soup = getresponseandsoup(url)
     categories_urls = [
         x.get("href")
@@ -29,6 +31,8 @@ def extractcateg(url):
 
 
 def geturlscateg(url, categorie_choisie):
+	# Modifie url source de la catégorie en fonction du nombre de pages
+	# Stock urls modifiées dans listes urls
     soup = getresponseandsoup(url)
     results = soup.find("form", {"class": "form-horizontal"}).find("strong").text
     nombre_pages = ceil(float(results) / 20)
@@ -43,6 +47,8 @@ def geturlscateg(url, categorie_choisie):
 
 
 def getarticleslinks(urls):
+	# Extrait les urls de tous les articles de la catégorie analysée
+	# Stock ces urls dans liste liens_articles
     liens_articles = []
     for j in urls:
         soup = getresponseandsoup(j)
@@ -56,8 +62,9 @@ def getarticleslinks(urls):
 
 
 def getbookdata(url):
+	# Extrait données requises de l'article
+	# Stock ces données dans liste data
     soup = getresponseandsoup(url)
-    # BeautifulSoup renvoie en réponse code HTML format text en utilisant parser souhaité - 'lxml'
     # soup.find utilise BS pour trouver balises correspondantes dans code HTML et extraire donnée souhaitée
     title = soup.find("div", {"class": "col-sm-6 product_main"}).find("h1").text
     upc = soup.find("table", {"class": "table table-striped"}).find_all("td")
@@ -65,8 +72,8 @@ def getbookdata(url):
     prixHT = upc[2].text.replace("Â", "").replace("£", "")
     prixTTC = upc[3].text.replace("Â", "").replace("£", "")
     stock = re.sub("[^0-9]", "", soup.find("p", class_="instock availability").text)
-    catégorie = soup.find("ul", {"class": "breadcrumb"}).find_all("li")
-    CATEG = catégorie[2].text.replace("\n", "")
+    categorie = soup.find("ul", {"class": "breadcrumb"}).find_all("li")
+    CATEG = categorie[2].text.replace("\n", "")
     description = soup.find("article", {"class": "product_page"}).find_all("p")
     DESC = description[3].text.replace(";", ",")
     image = soup.find("img")
@@ -74,12 +81,14 @@ def getbookdata(url):
     rating = soup.find("p", class_=re.compile("star-rating")).get("class")[1]
     rating_dic = {"One": "1", "Two": "2", "Three": "3", "Four": "4", "Five": "5"}
     note = rating_dic[rating]
-    data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC, note, image_url, url]
+    data = [title, UPC, prixHT, prixTTC, stock, CATEG, DESC.encode( 'ascii', errors='ignore' ), note, image_url, url]
     print(f"Données livre {title} stockées pour écriture")
     return data
 
 
-def openfile(titre):
+def createdirectory(titre):
+	# Ouvre un répertoire nommé d'après nom catégorie/livre analysé.e et moment analyse
+	# Ouvre ce répertoire comme répertoire de travail
     date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     titre_file = sanitize_filepath(titre)
     path = f"{os.getcwd()}/fichiers-{titre_file}-{date}"
@@ -90,6 +99,7 @@ def openfile(titre):
 
 
 def downldimg(titre, categorie, image_url):
+	# Télécharge image du livre analysé
     titre_image = sanitize_filename(titre)
     img_name = f"Image_{titre_image:.60}_{categorie}.jpeg"
     # Limite nombre de caractères pour titre de l'image pour éviter erreur
@@ -104,7 +114,8 @@ def downldimg(titre, categorie, image_url):
     # message d'erreur prévu
 
 
-def opencsv(name, listes):
+def writecsv(name, listes):
+	# Ouvre et écrit dans un fichier csv données du livre analysé issues de fonction getbookdata
     if listes is None or len(listes) == 0:
         print("Erreur : données vides")
         return
@@ -131,38 +142,37 @@ def opencsv(name, listes):
 
 
 def getlivre(url, categorie=None):
+	# Rassemble fonctions utiles au scrapping d'un livre sur base de son url
     data = getbookdata(url)
     if categorie is None:
-        openfile(data[0])
+        createdirectory(data[0])
     downldimg(titre=data[0], categorie=data[5], image_url=data[8])
     books = []
     books.append(data)
     if categorie is None:
-        opencsv(name=data[0], listes=books)
-    return data
+        writecsv(name=data[0], listes=books)
+        # Prévoit repousser écriture csv en cas de scrapping global d'une catégorie
 
 
 def getcategorie(categorie_choisie):
+	# Rassemble fonctions utiles au scrapping d'une catégorie entière du site, choisie ou non
     url = f"http://books.toscrape.com/catalogue/category/books/{categorie_choisie}/index.html"
     response = requests.get(url)
     if response.status_code != 200:
         print("Erreur : nom de la catégorie introuvable")
         return -1
-
     urls_categ = geturlscateg(url, categorie_choisie)
-    # Liste urls_categ stock les urls des pages de la catégorie
-
     liens_articles = getarticleslinks(urls_categ)
-    # Liste liens_articles stock les urls de chaque article
-    openfile(titre=categorie_choisie)
+    createdirectory(titre=categorie_choisie)
     books = []
     for url in liens_articles:
         data = getlivre(url, categorie=categorie_choisie)
         books.append(data)
-    opencsv(name=categorie_choisie, listes=books)
+    writecsv(name=categorie_choisie, listes=books)
 
 
-def choix(choix):
+def choixcategorie(choix):
+	# Definit scrapping catégorie unique ou toutes les catégories selon script choisi
     categories_urls = extractcateg("http://books.toscrape.com/index.html")
     if choix is not None:
         for y in categories_urls:
