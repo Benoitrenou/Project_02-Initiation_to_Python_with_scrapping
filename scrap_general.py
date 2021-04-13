@@ -1,3 +1,3 @@
-from fonctions_scrap import choixcategorie
+from fonctions_scrap import scrapcategorie
 
-choixcategorie (choix=None)
+scrapcategorie (choix=False)
