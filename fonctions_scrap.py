@@ -17,7 +17,8 @@ def getresponseandsoup(url):
     Renvoie analyse via soup base librairie 'lxml'
     """
     response = requests.get(url)
-    soup = BeautifulSoup(response.text, "lxml")
+    result = response.content.decode("utf8")
+    soup = BeautifulSoup(result, "lxml")
     return soup
 
 
@@ -78,12 +79,10 @@ def getbookdata(url):
     """
     soup = getresponseandsoup(url)
     title = soup.find("div", {"class": "col-sm-6 product_main"}).find("h1").text
-    title= title.decode('utf-8').encode('latin1')
-    print (title)
     upc = soup.find("table", {"class": "table table-striped"}).find_all("td")
     UPC = upc[0].text
-    prixHT = upc[2].text.replace("Â", "").replace("£", "")
-    prixTTC = upc[3].text.replace("Â", "").replace("£", "")
+    prixHT = upc[2].text
+    prixTTC = upc[3].text
     stock = re.sub("[^0-9]", "", soup.find("p", class_="instock availability").text)
     categorie = soup.find("ul", {"class": "breadcrumb"}).find_all("li")
     CATEG = categorie[2].text.replace("\n", "")
@@ -108,39 +107,34 @@ def createdirectory(titre):
     titre_file = sanitize_filepath(titre)
     path = f"{os.getcwd()}/fichiers-{titre_file}-{date}"
     os.mkdir(path)
-    cwd = os.getcwd()
     print("Dossier d'enregistrement des fichiers :", path, "\n")
     return path
 
 
-def downldimg(titre, categorie, image_url, path):
+def downldimg(image_url, path):
     """
     Télécharge image du livre analysé
     Limite nombre de caractères pour titre de l'image pour éviter erreur
     Message d'erreur prévu si image non téléchargée
     """
-    titre_image = sanitize_filename(titre)
-    img_name = f"Image_{titre_image:.60}_{categorie}.jpeg"
     r = requests.get(image_url, stream=True)
     if r.status_code == 200:
         r.raw.decode_content = True
-        with open(f"{path}/{img_name}", "wb") as f:
+        with open(f"{path}", "wb") as f:
             shutil.copyfileobj(r.raw, f)
-        print(f"Image {titre_image} téléchargée")
+        print(f"{path.split('/')[2]} téléchargée")
     else:
-        print(f"Image {titre_image} non téléchargée - problème laison URL")
+        print(f"Image non téléchargée - problème laison URL")
 
 
-def writecsv(name, listes, path):
+def writecsv(listes, path):
     """
     Ouvre et écrit dans un fichier csv données en argument listes dans répertoire path
     """
     if listes is None or len(listes) == 0:
         print("Erreur : données vides")
         return
-    titre_csv = sanitize_filename(name)
-    filename = f"Data-{titre_csv:.60}.csv"
-    with open(f"{path}/{filename}", "w", encoding="utf-8", newline="") as file:
+    with open(f"{path}", "w", encoding="utf-8-sig", newline="") as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL, delimiter=";")
         entête = [
             "Titre",
@@ -156,9 +150,7 @@ def writecsv(name, listes, path):
         ]
         writer.writerow(entête)
         writer.writerows(listes)
-        print(
-            f"\nDonnées de {name} téléchargées et disponibles sur fichier Data-{name}.csv\n"
-        )
+        print(f"\nFichier {path.split('/')[2]} téléchargé et disponible\n")
 
 
 def getlivre(url, workingdirectory):
@@ -169,7 +161,8 @@ def getlivre(url, workingdirectory):
     """
     data = getbookdata(url)
     downldimg(
-        titre=data[0], categorie=data[5], image_url=data[8], path=f"{workingdirectory}"
+        image_url=data[8],
+        path=f"{workingdirectory}/Image_{sanitize_filename(data[0]):.60}_{data[5]}.jpeg",
     )
     return data
 
@@ -190,7 +183,7 @@ def getcategorie(categorie_choisie):
     for url in liens_articles:
         data = getlivre(url=url, workingdirectory=workingdirectory)
         books.append(data)
-    writecsv(name=categorie_choisie, listes=books, path=workingdirectory)
+    writecsv(listes=books, path=f"{workingdirectory}/Data-{categorie_choisie}.csv")
 
 
 def scrapcategorie(choix):
@@ -198,7 +191,7 @@ def scrapcategorie(choix):
     Definit scrapping catégorie unique ou toutes les catégories selon script choisi
     """
     categories_urls = extractcateg("http://books.toscrape.com/index.html")
-    if choix is True:
+    if choix:
         for y in categories_urls:
             print(f'Catégorie disponible : {y.split("/")[3]}')
         categorie_choisie = input(
@@ -221,6 +214,10 @@ def scraplivre(url):
     data = getbookdata(url)
     workingdirectory = createdirectory(titre=data[0])
     downldimg(
-        titre=data[0], categorie=data[5], image_url=data[8], path=workingdirectory
+        image_url=data[8],
+        path=f"{workingdirectory}/Image_{sanitize_filename(data[0]):.60}_{data[5]}.jpeg",
     )
-    writecsv(name=data[0], listes=[data], path=workingdirectory)
+    writecsv(
+        listes=[data],
+        path=f"{workingdirectory}/Data-{sanitize_filename(data[0]):.60}.csv",
+    )
