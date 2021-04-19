@@ -1,21 +1,57 @@
-Afin de faire fonctionner ce script, veuillez suivre les étapes suivantes 
+Afin de faire fonctionner ces scripts, veuillez suivre les étapes suivantes
 
-1. Installez les packages précisés dans requirements
-2. Lancez le script désiré depuis le terminal 
-  - Pour le script 'scrap_url.py' : veuillez copier-coller l'URL du livre sur books.toscrape.com dont vous désirez récupérer les données
-  - exemple : http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html
-  - le script crée un fichier csv dans lequel sont écrites les données du livre nommé d'après le titre du livre
-  - le script télécharge l'image de la couverture du livre nommée d'après le titre du livre 
-  
-  - Pour le script 'scrap_categorie.py' : entrez la catégorie dont vous désirez récupérer les données sur le modèle 'catégorie_n°'
-  Le script énumère toutes les catégories et le n° correspondant, il vous suffit de choisir au sein de cette liste 
-  exemple : poetry_23
-  - le script crée un fichier csv nommé selon la catégorie choisie dans lequel sont écrites les données de tous les livres de la catégorie 
-  - le script télécharge chaque couverture qui sont nommées d'après le titre du livre
-  
-  - Pour le script 'scrap_général.py' : lancez simplement le script pour que celui-ci récupère les données de l'ensemble des livres du site 
-  - le script crée un fichier csv pour chaque catégorie dans lequel sont écrites les données de tous les livres de la catégorie  
-  - le script télécharge chaque couverture qui sont nommées d'après le titre du livre
-3. Retrouvez vos données dans fichier créé dans l'arborescence du script nommé d'après le titre ou la catégorie dont vous avez receuilli les données et le moment (date-heure) ou vous avez lancé le script
-  - exemple pour une catégorie : "fichiers-crime_51-2021-04-02_22-33-19" > "Data-crime_51.csv" + images des livres correspondants 
-  - exemple pour un livre unique : "fichiers-Rip it Up and Start Again-2021-04-02_22-19-58" > "Data-Rip it Up and Start Again.csv" + "Image_Rip it Up and Start Again_Music.jpeg"
+I. Installation de l'environnement virtuel 
+
+Si vous êtes sur un OS hors Windows 
+Depuis votre terminal de commande, effectuez les commandes suivantes 
+Création de l'environnement virtuel : 
+    $ python -m venv <environment_name>
+    exemple : python -m venv env_scrapping 
+Activation de l'environnement virtuel : 
+    $ source <environment_name>/bin/activate
+    exemple : source env_scrapping/bin/activate
+    
+Si vous êtes sur un OS Windows
+Depuis votre terminal de commande, effectuez les commandes suivantes 
+Création de l'environnement virtuel : 
+    $ virtualenv <environment_name>
+    exemple : python -m venv env_scrapping 
+Activation de l'environnement virtuel : 
+    $ source <environment_name>/Scripts/activate
+    exemple : source env_scrapping/Scripts/activate
+    
+Installation des packages : 
+    $ pip install -r requirements.txt
+    
+II. Utilisation des scritps 
+
+Pour lancer le script désiré depuis le terminal, utilisez la commande : 
+    $ python <nom_du_script>
+    exemple : $ python scrap_url.py
+
+A. Pour le script scrap_url.py : 
+
+Copier-Coller l'URL du livre sur books.toscrap.com
+    exemple : http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html
+Le script ouvre un répertoire comprenant le nom du livre visé et la date et l'heure de l'exécution du script
+    exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58
+Le script télécharge un fichier .csv contenant les données du livre ciblé dans le répertoire
+    exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Data-A Light in the Attic.csv
+Le script télécharge un fichier .jpeg de l'image de couverture du livre ciblé dans le répertoire
+    exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Image_A Light in the Attic_Poetry.jpeg
+
+B. Pour le script scrap_categorie.py : 
+
+Entrez la catégorie dont vous désirez récupérer les données en suivant le modèle indiqué "nomcatégorie_n°"
+    exemple : travel_2
+Le script crée un répertoire du nom de la catégorie visée et la date et l'heure de l'exécution du script
+    exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10
+Le script télécharge un fichier .csv contenant les données de tous les livres de la catégorie ciblée dans le répertoire
+    exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Data-travel_2.csv
+Le script télécharge les fichiers .jpeg des images de couvertures de tous les livres de la catégorie ciblée  dans le répertoire
+    exemple :  exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Image_*.jpeg
+    
+C. Pour le script scrap_general.py : 
+
+Lancez le script qui effectuera le même process que scrap_categorie.py mais pour chaque catégorie du site 
+Un répertoire est créé pour chacune d'entre elles 
