@@ -8,7 +8,7 @@ Depuis votre terminal de commande, effectuez les commandes suivantes
 
 ## Création de l'environnement virtuel : 
 
-### Sous Linux/ MOC OS
+### Sous Linux/ MAC OS
 
     $ python -m venv <environment_name>
     exemple : python -m venv env_scrapping 
