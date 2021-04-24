@@ -1,17 +1,17 @@
 Afin de faire fonctionner ces scripts, veuillez suivre les étapes suivantes
 
-I. Installation de l'environnement virtuel 
+# I. Installation de l'environnement virtuel 
 
 Si vous êtes sur un OS hors Windows 
 
 Depuis votre terminal de commande, effectuez les commandes suivantes 
 
-Création de l'environnement virtuel : 
+## Création de l'environnement virtuel : 
 
     $ python -m venv <environment_name>
     exemple : python -m venv env_scrapping 
     
-Activation de l'environnement virtuel : 
+## Activation de l'environnement virtuel : 
 
     $ source <environment_name>/bin/activate
     exemple : source env_scrapping/bin/activate
@@ -20,28 +20,28 @@ Si vous êtes sur un OS Windows
 
 Depuis votre terminal de commande, effectuez les commandes suivantes
 
-Création de l'environnement virtuel : 
+## Création de l'environnement virtuel : 
 
     $ virtualenv <environment_name>
     exemple : python -m venv env_scrapping 
    
-Activation de l'environnement virtuel : 
+## Activation de l'environnement virtuel : 
 
     $ source <environment_name>/Scripts/activate
     exemple : source env_scrapping/Scripts/activate
     
-Installation des packages : 
+## Installation des packages : 
 
     $ pip install -r requirements.txt
     
-II. Utilisation des scritps 
+# II. Utilisation des scritps 
 
 Pour lancer le script désiré depuis le terminal, utilisez la commande : 
 
     $ python <nom_du_script>
     exemple : $ python scrap_url.py
 
-A. Pour le script scrap_url.py : 
+## A. Pour le script scrap_url.py : 
 
 Copier-Coller l'URL du livre sur books.toscrap.com
 
@@ -59,7 +59,7 @@ Le script télécharge un fichier .jpeg de l'image de couverture du livre ciblé
 
     exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Image_A Light in the Attic_Poetry.jpeg
 
-B. Pour le script scrap_categorie.py : 
+## B. Pour le script scrap_categorie.py : 
 
 Entrez la catégorie dont vous désirez récupérer les données en suivant le modèle indiqué "nomcatégorie_n°"
 
@@ -77,7 +77,7 @@ Le script télécharge les fichiers .jpeg des images de couvertures de tous les 
 
     exemple :  exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Image_*.jpeg
     
-C. Pour le script scrap_general.py : 
+## C. Pour le script scrap_general.py : 
 
 Lancez le script qui effectuera le même process que scrap_categorie.py mais pour chaque catégorie du site 
 Un répertoire est créé pour chacune d'entre elles 
