@@ -8,24 +8,24 @@ Depuis votre terminal de commande, effectuez les commandes suivantes
 
 ## Création de l'environnement virtuel : 
 
+### Sous Linux/ MOC OS
+
     $ python -m venv <environment_name>
     exemple : python -m venv env_scrapping 
     
+### Sous Windows:
+    
+    $ virtualenv <environment_name>
+    exemple : virtualenv env_scrapping 
+    
 ## Activation de l'environnement virtuel : 
+
+### Sous Linux / MAC OS:
 
     $ source <environment_name>/bin/activate
     exemple : source env_scrapping/bin/activate
-    
-Si vous êtes sur un OS Windows
-
-Depuis votre terminal de commande, effectuez les commandes suivantes
-
-## Création de l'environnement virtuel : 
-
-    $ virtualenv <environment_name>
-    exemple : python -m venv env_scrapping 
    
-## Activation de l'environnement virtuel : 
+### Sous Windows:
 
     $ source <environment_name>/Scripts/activate
     exemple : source env_scrapping/Scripts/activate
