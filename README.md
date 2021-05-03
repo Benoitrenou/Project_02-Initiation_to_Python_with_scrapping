@@ -1,6 +1,6 @@
 Afin de faire fonctionner ces scripts, veuillez suivre les étapes suivantes
 
-Tout d'abord, clôner en local le dépôt distant
+Tout d'abord, clônez en local le dépôt distant
 
     $ git clone https://github.com/Benoitrenou/projet_02.git    
 
