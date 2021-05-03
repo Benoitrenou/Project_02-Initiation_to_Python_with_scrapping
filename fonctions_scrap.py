@@ -105,7 +105,7 @@ def createdirectory(titre):
     date = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     titre = f"{titre:.60}"
     titre_file = sanitize_filepath(titre)
-    path = f"{os.getcwd()}/fichiers-{titre_file}-{date}"
+    path = f"{os.getcwd()}/{titre_file}-{date}"
     os.mkdir(path)
     print("Dossier d'enregistrement des fichiers :", path, "\n")
     return path
@@ -162,7 +162,7 @@ def getlivre(url, workingdirectory):
     data = getbookdata(url)
     downldimg(
         image_url=data[8],
-        path=f"{workingdirectory}/Image_{sanitize_filename(data[0]):.60}_{data[5]}.jpeg",
+        path=f"{workingdirectory}/{sanitize_filename(data[0]):.60}_{data[5]}.jpeg",
     )
     return data
 
@@ -183,7 +183,7 @@ def getcategorie(categorie_choisie):
     for url in liens_articles:
         data = getlivre(url=url, workingdirectory=workingdirectory)
         books.append(data)
-    writecsv(listes=books, path=f"{workingdirectory}/Data-{categorie_choisie}.csv")
+    writecsv(listes=books, path=f"{workingdirectory}/{categorie_choisie}.csv")
 
 
 def scrapcategorie(choix):
@@ -215,9 +215,9 @@ def scraplivre(url):
     workingdirectory = createdirectory(titre=data[0])
     downldimg(
         image_url=data[8],
-        path=f"{workingdirectory}/Image_{sanitize_filename(data[0]):.60}_{data[5]}.jpeg",
+        path=f"{workingdirectory}/{sanitize_filename(data[0]):.60}_{data[5]}.jpeg",
     )
     writecsv(
         listes=[data],
-        path=f"{workingdirectory}/Data-{sanitize_filename(data[0]):.60}.csv",
+        path=f"{workingdirectory}/{sanitize_filename(data[0]):.60}.csv",
     )
