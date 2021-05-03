@@ -78,7 +78,7 @@ def getbookdata(url):
     soup.find utilise BS pour trouver balises correspondantes dans code HTML et extraire donnée souhaitée
     """
     soup = getresponseandsoup(url)
-    title = soup.find("div", {"class": "col-sm-6 product_main"}).find("h1").text
+    title = soup.find("div", {"class": "col-sm-6 product_main"}).find("h1").text.replace("’", " ").replace('"', ' ')
     upc = soup.find("table", {"class": "table table-striped"}).find_all("td")
     UPC = upc[0].text
     prixHT = upc[2].text
