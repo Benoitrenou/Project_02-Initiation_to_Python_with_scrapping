@@ -1,87 +1,91 @@
-Afin de faire fonctionner ces scripts, veuillez suivre les étapes suivantes
+This project aims to be a first introduction to the Python language
+The objective of the project scenario is to set up a python script to retrieve data from the site https://books.toscrape.com/
 
-Tout d'abord, clônez en local le dépôt distant
+Notions to master :
+    - Set up a Python virtual environment
+    - Mastery of the packages Requests, BeautifulSoup
+    - Data retrieving, cleaning and writing
+    - Writing a CSV file
 
-    $ git clone https://github.com/Benoitrenou/projet_02.git    
+## Create virtual envrionment
 
-# I. Installation de l'environnement virtuel 
-
-Si vous êtes sur un OS hors Windows 
-
-Depuis votre terminal de commande, effectuez les commandes suivantes 
-
-## Création de l'environnement virtuel : 
-
-### Sous Linux/ MAC OS
+### With Linux / Mac OS
 
     $ python -m venv <environment_name>
-    exemple : python -m venv env_scrapping 
-    
-### Sous Windows:
-    
-    $ virtualenv <environment_name>
-    exemple : virtualenv env_scrapping 
-    
-## Activation de l'environnement virtuel : 
+    example : python -m venv env_scrapping
 
-### Sous Linux / MAC OS:
+### With Windows
+
+    $ virtualenv <environment_name>
+    example : virtualenv env_scrapping
+
+## Activate virtual environment
+
+### With Linux / Mac OS
 
     $ source <environment_name>/bin/activate
     exemple : source env_scrapping/bin/activate
-   
-### Sous Windows:
+
+### With Windows
 
     $ source <environment_name>/Scripts/activate
     exemple : source env_scrapping/Scripts/activate
-    
-## Installation des packages : 
+
+## Installation of packages
 
     $ pip install -r requirements.txt
-    
-# II. Utilisation des scritps 
 
-Pour lancer le script désiré depuis le terminal, utilisez la commande : 
+## Use of scripts
 
-    $ python <nom_du_script>
-    exemple : $ python scrap_url.py
+To run the desired script from the terminal, use the command : 
 
-## A. Pour le script scrap_url.py : 
+    $ python <script_name>
+    example : $ python scrap_url.py
 
-Copier-Coller l'URL du livre sur books.toscrap.com
+There are three scripts available;
+    - scrap_url.py to retrieve data of one particular book
+    - scrap_categorie.py to retrieve data of one category's books
+    - scrap_general.py to retreive data froç the entire site
 
-    exemple : http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html
-    
-Le script ouvre un répertoire comprenant le nom du livre visé et la date et l'heure de l'exécution du script
+Here is how to use each of them:
 
-    exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58
-    
-Le script télécharge un fichier .csv contenant les données du livre ciblé dans le répertoire
+## A. For scrap_url.py : 
 
-    exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Data-A Light in the Attic.csv
-    
-Le script télécharge un fichier .jpeg de l'image de couverture du livre ciblé dans le répertoire
+Copy-Paste URL of the book on the site books.toscrap.com
 
-    exemple : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Image_A Light in the Attic_Poetry.jpeg
+    example : http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html
 
-## B. Pour le script scrap_categorie.py : 
+The script opens a directory named with the targeted book and the date and time of the script execution
 
-Entrez la catégorie dont vous désirez récupérer les données en suivant le modèle indiqué "nomcatégorie_n°"
+    example : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58
 
-    exemple : travel_2
-    
-Le script crée un répertoire du nom de la catégorie visée et la date et l'heure de l'exécution du script
+The script downloads a .csv file containing the data of the targeted book to the directory
 
-    exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10
-    
-Le script télécharge un fichier .csv contenant les données de tous les livres de la catégorie ciblée dans le répertoire
+    example : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Data-A Light in the Attic.csv
 
-    exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Data-travel_2.csv
-    
-Le script télécharge les fichiers .jpeg des images de couvertures de tous les livres de la catégorie ciblée  dans le répertoire
+The script downloads a .jpeg file of the target book cover image to the directory
 
-    exemple :  exemple : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Image_*.jpeg
-    
-## C. Pour le script scrap_general.py : 
+    example : C:\...\fichiers-A Light in the Attic-2021-04-19_14-24-58/Image_A Light in the Attic_Poetry.jpeg
 
-Lancez le script qui effectuera le même process que scrap_categorie.py mais pour chaque catégorie du site 
-Un répertoire est créé pour chacune d'entre elles 
+## B. For scrap_categorie.py : 
+
+Enter the category from which you want to retrieve data following the template indicated "category_name_n°"
+
+    example : travel_2
+
+The script creates a directory named with the target category and the date and time of the script execution
+
+    example : C:\...\fichiers-travel_2-2021-04-19_13-54-10
+
+The script downloads a .csv file containing the data of all the books of the targeted category in the directory
+
+    example : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Data-travel_2.csv
+
+The script downloads the .jpeg files of the cover images of all the books of the targeted category in the directory
+
+    example : C:\...\fichiers-travel_2-2021-04-19_13-54-10/Image_*.jpeg
+
+## C. For scrap_general.py : 
+
+Run the script that will perform the same process as scrap_categorie.py but for each category of the site 
+A directory is created for each of them
